@@ -74,6 +74,12 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="cursor-pointer">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link to="/profile" className="cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
                       Profile

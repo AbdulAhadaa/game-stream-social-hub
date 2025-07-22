@@ -12,6 +12,7 @@ import Trending from "./pages/Trending";
 import Groups from "./pages/Groups";
 import CreateGroup from "./pages/CreateGroup";
 import Recent from "./pages/Recent";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Navbar from "@/components/Layout/Navbar";
 
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/groups" element={<Groups />} />
               <Route path="/groups/create" element={<CreateGroup />} />
               <Route path="/recent" element={<Recent />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
