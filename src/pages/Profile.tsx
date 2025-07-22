@@ -59,8 +59,8 @@ const Profile = () => {
         .from('posts')
         .select(`
           *,
-          author:profiles(username, display_name, avatar_url),
-          group:groups(name)
+          profiles!posts_author_id_fkey(username, display_name, avatar_url),
+          groups!posts_group_id_fkey(name)
         `)
         .eq('author_id', user.id)
         .order('created_at', { ascending: false });

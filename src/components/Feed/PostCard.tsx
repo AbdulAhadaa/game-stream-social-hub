@@ -3,16 +3,9 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Heart, 
-  MessageCircle, 
-  Share2, 
-  ChevronUp, 
-  ChevronDown, 
-  MoreHorizontal,
-  Play
-} from "lucide-react";
+import { MoreHorizontal, Play } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import PostInteractions from "./PostInteractions";
 
 interface PostCardProps {
   post: {
@@ -138,45 +131,14 @@ const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
       </CardContent>
 
       <CardFooter className="pt-0">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-1">
-            <Button
-              variant={userVote === 1 ? "default" : "ghost"}
-              size="sm"
-              className="h-8 px-2 gap-1"
-              onClick={() => handleVote(1)}
-            >
-              <ChevronUp className="h-4 w-4" />
-              <span className="text-xs">{post.upvotes}</span>
-            </Button>
-            
-            <span className="text-sm font-medium px-2">
-              {netScore > 0 ? `+${netScore}` : netScore}
-            </span>
-            
-            <Button
-              variant={userVote === -1 ? "destructive" : "ghost"}
-              size="sm"
-              className="h-8 px-2 gap-1"
-              onClick={() => handleVote(-1)}
-            >
-              <ChevronDown className="h-4 w-4" />
-              <span className="text-xs">{post.downvotes}</span>
-            </Button>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="gap-1">
-              <MessageCircle className="h-4 w-4" />
-              <span className="text-xs">{post.comment_count}</span>
-            </Button>
-            
-            <Button variant="ghost" size="sm" className="gap-1">
-              <Share2 className="h-4 w-4" />
-              <span className="text-xs">Share</span>
-            </Button>
-          </div>
-        </div>
+        <PostInteractions 
+          postId={post.id}
+          upvotes={post.upvotes || 0}
+          downvotes={post.downvotes || 0}
+          commentCount={post.comment_count || 0}
+          userVote={userVote}
+          onVoteChange={() => {}}
+        />
       </CardFooter>
     </Card>
   );

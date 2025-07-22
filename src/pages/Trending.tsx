@@ -28,8 +28,8 @@ const Trending = () => {
         .from('posts')
         .select(`
           *,
-          author:profiles(username, display_name, avatar_url),
-          group:groups(name)
+          profiles!posts_author_id_fkey(username, display_name, avatar_url),
+          groups!posts_group_id_fkey(name)
         `)
         .gte('upvotes', 1) // At least 1 upvote
         .order('upvotes', { ascending: false })
@@ -145,11 +145,16 @@ const Trending = () => {
               </TabsContent>
 
               <TabsContent value="recent" className="space-y-6 mt-6">
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <p className="text-muted-foreground">Recent posts from the main feed</p>
-                  </CardContent>
-                </Card>
+                {trendingPosts.slice().reverse().map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+                {trendingPosts.length === 0 && (
+                  <Card>
+                    <CardContent className="p-6 text-center">
+                      <p className="text-muted-foreground">No recent posts available</p>
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
 
               <TabsContent value="groups" className="space-y-4 mt-6">
