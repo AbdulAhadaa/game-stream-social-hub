@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import Trending from "./pages/Trending";
 import Groups from "./pages/Groups";
 import CreateGroup from "./pages/CreateGroup";
+import GroupDetail from "./pages/GroupDetail";
 import Recent from "./pages/Recent";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/trending" element={<Trending />} />
               <Route path="/groups" element={<Groups />} />
               <Route path="/groups/create" element={<CreateGroup />} />
+              <Route path="/groups/:groupName" element={<GroupDetail />} />
               <Route path="/recent" element={<Recent />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -169,47 +169,55 @@ const Groups = () => {
             ) : (
               <div className="space-y-4">
                 {filteredGroups.map((group) => (
-                  <Card key={group.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="text-xl font-semibold">r/{group.name}</h3>
-                            {group.member_count > 100 && (
-                              <Badge variant="secondary" className="gap-1">
-                                <TrendingUp className="h-3 w-3" />
-                                Popular
-                              </Badge>
+                  <Link key={group.id} to={`/groups/${group.name}`} className="block">
+                    <Card className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h3 className="text-xl font-semibold">r/{group.name}</h3>
+                              {group.member_count > 100 && (
+                                <Badge variant="secondary" className="gap-1">
+                                  <TrendingUp className="h-3 w-3" />
+                                  Popular
+                                </Badge>
+                              )}
+                            </div>
+                            {group.description && (
+                              <p className="text-muted-foreground mb-3">{group.description}</p>
+                            )}
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Users className="h-4 w-4" />
+                                {group.member_count} members
+                              </span>
+                              <span>Created {new Date(group.created_at).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                          <div className="ml-4">
+                            {userGroups.includes(group.id) ? (
+                              <Button
+                                variant="outline"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleLeaveGroup(group.id);
+                                }}
+                              >
+                                Leave
+                              </Button>
+                            ) : (
+                              <Button onClick={(e) => {
+                                e.preventDefault();
+                                handleJoinGroup(group.id);
+                              }}>
+                                Join
+                              </Button>
                             )}
                           </div>
-                          {group.description && (
-                            <p className="text-muted-foreground mb-3">{group.description}</p>
-                          )}
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Users className="h-4 w-4" />
-                              {group.member_count} members
-                            </span>
-                            <span>Created {new Date(group.created_at).toLocaleDateString()}</span>
-                          </div>
                         </div>
-                        <div className="ml-4">
-                          {userGroups.includes(group.id) ? (
-                            <Button
-                              variant="outline"
-                              onClick={() => handleLeaveGroup(group.id)}
-                            >
-                              Leave
-                            </Button>
-                          ) : (
-                            <Button onClick={() => handleJoinGroup(group.id)}>
-                              Join
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
                 
                 {filteredGroups.length === 0 && (

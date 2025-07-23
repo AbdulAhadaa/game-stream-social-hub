@@ -31,7 +31,6 @@ const Trending = () => {
           profiles!posts_author_id_fkey(username, display_name, avatar_url),
           groups!posts_group_id_fkey(name)
         `)
-        .gte('upvotes', 1) // At least 1 upvote
         .order('upvotes', { ascending: false })
         .limit(20);
       

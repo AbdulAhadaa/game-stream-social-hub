@@ -59,7 +59,6 @@ const Profile = () => {
         .from('posts')
         .select(`
           *,
-          profiles!posts_author_id_fkey(username, display_name, avatar_url),
           groups!posts_group_id_fkey(name)
         `)
         .eq('author_id', user.id)

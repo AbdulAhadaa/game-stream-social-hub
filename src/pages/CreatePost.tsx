@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ import { ImageIcon, VideoIcon, X } from "lucide-react";
 const CreatePost = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [groups, setGroups] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -23,7 +24,7 @@ const CreatePost = () => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    group_id: "",
+    group_id: location.state?.selectedGroupId || "",
     post_type: "text",
     tags: []
   });

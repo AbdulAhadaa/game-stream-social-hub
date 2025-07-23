@@ -31,7 +31,6 @@ const Index = () => {
           profiles!posts_author_id_fkey(username, display_name, avatar_url),
           groups!posts_group_id_fkey(name)
         `)
-        .not('author_id', 'is', null)
         .order('created_at', { ascending: false })
         .limit(20);
 
