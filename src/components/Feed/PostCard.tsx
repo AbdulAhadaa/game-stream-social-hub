@@ -19,12 +19,21 @@ interface PostCardProps {
     downvotes: number;
     comment_count: number;
     created_at: string;
-    author: {
+    profiles?: {
+      username: string;
+      display_name?: string;
+      avatar_url?: string;
+    } | null;
+    groups?: {
+      name: string;
+    } | null;
+    // Fallback for older structure
+    author?: {
       username: string;
       display_name?: string;
       avatar_url?: string;
     };
-    group: {
+    group?: {
       name: string;
     };
   };
@@ -34,6 +43,10 @@ interface PostCardProps {
 
 const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Get author data from either profiles or author (for compatibility)
+  const authorData = post.profiles || post.author || { username: 'Unknown', display_name: 'Unknown User' };
+  const groupData = post.groups || post.group || { name: 'unknown' };
 
   const netScore = post.upvotes - post.downvotes;
 
@@ -90,14 +103,14 @@ const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={post.author.avatar_url} />
-              <AvatarFallback>{post.author.username.charAt(0).toUpperCase()}</AvatarFallback>
+              <AvatarImage src={authorData.avatar_url} />
+              <AvatarFallback>{authorData.username?.charAt(0)?.toUpperCase() || 'U'}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-medium text-sm">{post.author.display_name || post.author.username}</span>
+                <span className="font-medium text-sm">{authorData.display_name || authorData.username}</span>
                 <span className="text-muted-foreground text-xs">•</span>
-                <Badge variant="secondary" className="text-xs">r/{post.group.name}</Badge>
+                <Badge variant="secondary" className="text-xs">r/{groupData.name}</Badge>
               </div>
               <span className="text-muted-foreground text-xs">
                 {formatDistanceToNow(new Date(post.created_at))} ago
