@@ -27,7 +27,7 @@ const CommentSection = ({ postId, commentCount, onCommentCountChange }: CommentS
         .from('comments')
         .select(`
           *,
-          profiles!inner(username, display_name, avatar_url)
+          profiles!comments_author_id_profiles_user_id_fkey(username, display_name, avatar_url)
         `)
         .eq('post_id', postId)
         .order('created_at', { ascending: true });
