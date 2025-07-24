@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, Play } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import PostInteractions from "./PostInteractions";
+import CommentSection from "../Comments/CommentSection";
 
 interface PostCardProps {
   post: {
@@ -143,7 +144,7 @@ const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
         )}
       </CardContent>
 
-      <CardFooter className="pt-0">
+      <CardFooter className="pt-0 pb-0">
         <PostInteractions 
           postId={post.id}
           upvotes={post.upvotes || 0}
@@ -153,6 +154,14 @@ const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
           onVoteChange={() => {}}
         />
       </CardFooter>
+      
+      <div className="px-6 pb-6">
+        <CommentSection 
+          postId={post.id}
+          commentCount={post.comment_count || 0}
+          onCommentCountChange={() => {}}
+        />
+      </div>
     </Card>
   );
 };
