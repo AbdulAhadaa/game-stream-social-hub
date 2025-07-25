@@ -152,6 +152,8 @@ const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
           commentCount={post.comment_count || 0}
           userVote={userVote}
           onVoteChange={() => {}}
+          postTitle={post.title}
+          postContent={post.content || ""}
         />
       </CardFooter>
       
