@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -44,6 +45,7 @@ interface PostCardProps {
 
 const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const navigate = useNavigate();
 
   // Get author data from either profiles or author (for compatibility)
   const authorData = post.profiles || post.author || { username: 'Unknown', display_name: 'Unknown User' };
@@ -125,7 +127,12 @@ const PostCard = ({ post, onVote, userVote }: PostCardProps) => {
       </CardHeader>
 
       <CardContent className="pb-3">
-        <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
+        <h3 
+          className="font-semibold text-lg mb-2 cursor-pointer hover:text-primary transition-colors" 
+          onClick={() => navigate(`/post/${post.id}`)}
+        >
+          {post.title}
+        </h3>
         
         {post.content && (
           <p className="text-muted-foreground text-sm mb-3">{post.content}</p>

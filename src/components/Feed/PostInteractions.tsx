@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { ChevronUp, ChevronDown, MessageCircle, Share2, Copy, Twitter, Facebook } from "lucide-react";
+import { ChevronUp, ChevronDown, MessageCircle, Share2, Copy, Twitter, Facebook, Link } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
@@ -170,12 +170,18 @@ const PostInteractions = ({
     return `${window.location.origin}/post/${postId}`;
   };
 
+  const getPermalink = () => {
+    // Reddit-style permalink format
+    return `${window.location.origin}/post/${postId}`;
+  };
+
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(getPostUrl());
+      await navigator.clipboard.writeText(getPermalink());
       toast({
-        title: "Link copied!",
-        description: "Post link copied to clipboard"
+        title: "Permalink copied!",
+        description: "Post permalink copied to clipboard",
+        duration: 2000
       });
     } catch (error) {
       console.error('Failed to copy:', error);
@@ -187,15 +193,40 @@ const PostInteractions = ({
     }
   };
 
+  const copyPermalink = async () => {
+    try {
+      await navigator.clipboard.writeText(getPermalink());
+      toast({
+        title: "Permalink copied!",
+        description: "Direct link to this post copied to clipboard",
+        duration: 2000
+      });
+    } catch (error) {
+      console.error('Failed to copy permalink:', error);
+      toast({
+        title: "Failed to copy",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    }
+  };
+
   const shareToTwitter = () => {
     const text = encodeURIComponent(`${postTitle}\n\n${postContent.substring(0, 100)}${postContent.length > 100 ? '...' : ''}`);
-    const url = encodeURIComponent(getPostUrl());
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    const url = encodeURIComponent(getPermalink());
+    const hashtags = encodeURIComponent('GameHub,Gaming');
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`, '_blank', 'width=550,height=420');
   };
 
   const shareToFacebook = () => {
-    const url = encodeURIComponent(getPostUrl());
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    const url = encodeURIComponent(getPermalink());
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=550,height=420');
+  };
+
+  const shareToReddit = () => {
+    const url = encodeURIComponent(getPermalink());
+    const title = encodeURIComponent(postTitle);
+    window.open(`https://www.reddit.com/submit?url=${url}&title=${title}`, '_blank', 'width=550,height=500');
   };
 
   const handleNativeShare = async () => {
@@ -204,7 +235,13 @@ const PostInteractions = ({
         await navigator.share({
           title: postTitle,
           text: postContent.substring(0, 200),
-          url: getPostUrl()
+          url: getPermalink()
+        });
+        
+        toast({
+          title: "Shared successfully!",
+          description: "Post shared via native sharing",
+          duration: 2000
         });
       } catch (error) {
         if (error.name !== 'AbortError') {
@@ -274,10 +311,14 @@ const PostInteractions = ({
             <span className="text-sm hidden sm:inline">Share</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuItem onClick={handleNativeShare}>
             <Share2 className="mr-2 h-4 w-4" />
-            Share
+            Share Post
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={copyPermalink}>
+            <Link className="mr-2 h-4 w-4" />
+            Copy Permalink
           </DropdownMenuItem>
           <DropdownMenuItem onClick={copyToClipboard}>
             <Copy className="mr-2 h-4 w-4" />
@@ -291,6 +332,12 @@ const PostInteractions = ({
           <DropdownMenuItem onClick={shareToFacebook}>
             <Facebook className="mr-2 h-4 w-4" />
             Share on Facebook
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={shareToReddit}>
+            <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 9.188c-.319-.235-.79-.235-1.109 0-.235.157-.39.392-.47.628-.235-.078-.47-.157-.705-.235-.392-1.176-1.333-2.039-2.509-2.196V6.902c.627.078 1.176.392 1.568.862.157.157.392.235.627.235.235 0 .47-.078.627-.235.314-.314.314-.823 0-1.137-.314-.314-.823-.314-1.137 0-.157.157-.235.392-.235.627-.47-.392-1.098-.627-1.725-.627-.627 0-1.255.235-1.725.627 0-.235-.078-.47-.235-.627-.314-.314-.823-.314-1.137 0-.314.314-.314.823 0 1.137.157.157.392.235.627.235.235 0 .47-.078.627-.235.392-.47.941-.784 1.568-.862v.483C9.333 7.294 8.392 8.157 8 9.333c-.235.078-.47.157-.705.235-.078-.235-.235-.47-.47-.628-.319-.235-.79-.235-1.109 0-.549.392-.666 1.137-.274 1.686.196.274.509.431.823.431.196 0 .392-.078.549-.196.235-.157.392-.431.431-.705.235.078.47.157.705.235.157 1.176 1.098 2.039 2.274 2.196v.392c-.627.078-1.176.392-1.568.862-.157.157-.235.392-.235.627 0 .235.078.47.235.627.314.314.823.314 1.137 0 .314-.314.314-.823 0-1.137-.157-.157-.392-.235-.627-.235s-.47.078-.627.235c-.392-.47-.941-.784-1.568-.862v-.392c1.176-.157 2.117-1.02 2.274-2.196.235-.078.47-.157.705-.235.039.274.196.549.431.705.157.118.353.196.549.196.314 0 .627-.157.823-.431.392-.549.274-1.294-.274-1.686z"/>
+            </svg>
+            Share on Reddit
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

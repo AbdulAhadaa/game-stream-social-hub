@@ -16,6 +16,7 @@ import GroupDetail from "./pages/GroupDetail";
 import Recent from "./pages/Recent";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import PostDetail from "./pages/PostDetail";
 import Navbar from "@/components/Layout/Navbar";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/groups" element={<Groups />} />
               <Route path="/groups/create" element={<CreateGroup />} />
               <Route path="/groups/:groupName" element={<GroupDetail />} />
+              <Route path="/post/:postId" element={<PostDetail />} />
               <Route path="/recent" element={<Recent />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
