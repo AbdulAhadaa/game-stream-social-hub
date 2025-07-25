@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { Gamepad2, Plus, TrendingUp, Clock, Users, Settings, LogOut } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
@@ -54,6 +55,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           {user ? (
             <>
               <Link to="/create-post">
