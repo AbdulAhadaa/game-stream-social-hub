@@ -195,16 +195,17 @@ const Profile = () => {
                     className="hidden"
                     id="avatar-upload"
                   />
-                  <label htmlFor="avatar-upload">
+                  <label 
+                    htmlFor="avatar-upload"
+                    className="absolute bottom-0 right-0 cursor-pointer"
+                  >
                     <Button 
                       size="sm" 
-                      className="absolute bottom-0 right-0 rounded-full p-2"
+                      className="rounded-full p-2"
                       disabled={isUploading}
-                      asChild
+                      type="button"
                     >
-                      <span>
-                        <Camera className="h-4 w-4" />
-                      </span>
+                      <Camera className="h-4 w-4" />
                     </Button>
                   </label>
                 </div>

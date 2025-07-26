@@ -135,7 +135,7 @@ const PostInteractions = ({
         
         if (voteType === 1) {
           setCurrentUpvotes(prev => prev + 1);
-        } else {
+        } else if (voteType === -1) {
           setCurrentDownvotes(prev => prev + 1);
         }
         
